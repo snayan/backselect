@@ -2,7 +2,7 @@
 select component based on [backbone](https://github.com/jashkenas/backbone)
 ## Introduction
 It is a lightweight, small size and  powerful select component,which is more beautiful than browser select.when changed,it will trigger `changed` event,which arguments will include oldVal,newVal,isDefault.
-## Surport
+## Feature
 * single select,just like radio
 * multiple select,just like checkbox
 * customize yourself className to change list item stylesheet
@@ -55,4 +55,11 @@ var roleSelect = new BackSelect(options);
 var otherView = new Backbone.View();
 otherView.listenTo(roleSelect, 'changed', changed);
 ```
+## Contributing
+I welcome contributions of all kinds from anyone.
+* [Bug reports](https://github.com/snayan/backselect/issues) 
+* [Feature requests](https://github.com/snayan/backselect/issues)
+* [Pull requests](https://github.com/snayan/backselect/pulls)
 
+## License
+Licensed under the MIT License

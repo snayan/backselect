@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>backselect</title>
+    <link href="src/select.css" rel="stylesheet">
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="node_modules/underscore/underscore.js"></script>
+    <script src="node_modules/backbone/backbone.js"></script>
+    <script src="select.js"></script>
+    <style rel="stylesheet">
+        #example_01 {
+            width: 240px;
+        }
+
+        body {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="example_01">
+
+</div>
+<script>
+    $(document).ready(function () {
+        var collection = new Backbone.Collection([{
+            name: '一级',
+            value: '1',
+            className: 'zy1',
+        }, {
+            name: '二级',
+            value: '2',
+            className: 'zy2',
+        },
+            {
+                name: '三级',
+                value: '3',
+                className: 'zy3',
+            },
+            {
+                name: '四级',
+                value: '4',
+                className: 'zy4',
+            },
+            {
+                name: '五级',
+                value: '5',
+                className: 'zy5',
+            }, {
+                name: '六级',
+                value: '6',
+                className: 'zy6',
+            }]);
+        var options = {
+            el: '#example_01',
+            collection: collection,
+            placeholder: '请选择级别',
+            default: ['1', '2'],
+            silent: true,
+            itemCount: 1,
+//            itemType: 'backbone_check'
+        };
+        var roleSelect = new BackSelect(options);
+        var otherView = new Backbone.View();
+        otherView.listenTo(roleSelect, 'changed', changed);
+    });
+    function changed(oldVal, newVal) {
+
+    }
+</script>
+</body>
+</html>

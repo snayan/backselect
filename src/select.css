@@ -1,0 +1,133 @@
+div.backbone_select {
+    height: 20px;
+    border: 1px solid #ccc;
+    margin: auto;
+    padding: 6px 20px 6px 12px;
+    position: relative;
+    cursor: pointer;
+    font-size: 14px;
+    color: #555555;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+    -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+
+div.backbone_select p {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+div.backbone_select p > span.placeholder {
+    color: #999999;
+}
+
+div.backbone_select img.xiala {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+}
+
+div.backbone_select ul.select_list {
+    list-style: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    cursor: default;
+    background: #ffffff;
+    overflow: scroll;
+    opacity: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    z-index: -1;
+    border: none;
+    transition: opacity ease-in-out .18s;
+    -webkit-transition: opacity ease-in-out .18s;
+}
+
+div.backbone_select li.select_item {
+    display: inline-block;
+    float: left;
+    position: relative;
+    margin-left: 18px;
+    margin-bottom: 18px;
+    padding-left: 10px;
+    margin-right: -28px;
+    text-decoration: none;
+    color: #666666;
+}
+
+div.backbone_select li.select_item:hover {
+    background: none;
+    text-decoration: none;
+}
+
+div.backbone_select li.select_item label {
+    height: 16px;
+    width: 16px;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 16px;
+    cursor: pointer;
+    float: left;
+    margin: 0 6px 0 0;
+    color: #ffffff;
+    text-align: center;
+}
+
+div.backbone_select li.selected.select_item label {
+    background: #4cb549;
+    color: #ffffff;
+    text-align: center;
+}
+
+div.backbone_select li.select_item.backbone_radio {
+    margin: 0;
+    padding: 7px 14px;
+    font-size: 12px;
+    line-height: 18px;
+    cursor: pointer;
+}
+
+div.backbone_select li.select_item.backbone_radio:hover {
+    color: #ffffff;
+    background: #4cb549;
+    text-decoration: none;
+}
+
+div.backbone_select li.select_item.backbone_check {
+    margin: 0 0 18px 0;
+    padding: 0;
+    font-size: 12px;
+    line-height: 18px;
+}
+
+div.backbone_select li.select_item.backbone_check:hover {
+    color: #4cb549;
+}
+
+div.backbone_select p span.backbone_check:after {
+    content: ';';
+    margin: 0 6px 0 4px;
+}
+
+div.backbone_select.opened ul.select_list {
+    display: block;
+    padding: 10px 14px;
+    margin: 2px -1px;
+    border: 1px solid #ccc;
+    opacity: 1;
+    height: auto;
+    z-index: 1000;
+}
+

@@ -1,5 +1,5 @@
 # backselect
-select component based on backbone
+select component based on [backbone](https://github.com/jashkenas/backbone)
 ## Introduction
 It is a lightweight, small size and  powerful select component,which is more beautiful than browser select.when changed,it will trigger `changed` event,which arguments will include oldVal,newVal,isDefault.
 ## Surport
@@ -11,10 +11,10 @@ It is a lightweight, small size and  powerful select component,which is more bea
 * ...
 
 ## Usage
-It is based on backbone. So ,it is depend on jquery,underscore,backbone.you must install those before use backselect.
+It is based on backbone. So ,it is depend on [jquery](https://github.com/jquery/jquery),[underscore](https://github.com/jashkenas/underscore),[backbone](https://github.com/jashkenas/backbone).you must install those before using backselect.
 if you have installed jquery,underscore,backbone,you can use it,like below
-* you need install it  `npm install backselect`
-* you need include `select.js` and `src/select.css` in your html.
+* install it  `npm install backselect`
+* include `select.js` and `src/select.css` in your html.
 
 ## Example
 you can just given options just like `new BackSelect(options)`.

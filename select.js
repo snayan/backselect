@@ -1,6 +1,3 @@
-/**
- * Created by zhangyang on 16/11/2016.
- */
 
 ;(function (root, factory) {
     if (typeof define === "function" && define.amd) {

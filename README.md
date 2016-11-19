@@ -21,7 +21,7 @@ you can just given options just like `new BackSelect(options)`.
 
 options
 * **el** ,just like Backbone.View options el ,which define parent element,always be `div`
-* **collection** ,just like Backbone.View options collection,which must be a Backbone.Collection instance,and the model must include **name**,**value** attributes.The **value** must be uniqued.
+* **collection** ,just like Backbone.View options collection,which must be a Backbone.Collection instance,and the model must include **name**,**value** attributes,also can include **className**.The **value** must be uniqued.The **className** will be added into the list item whether which is selected,which can define yourself stylesheet for list item. 
 * **itemType** , define select type,must be `backbone_radio` or `backbone_check`.if it is `undefined` or `null`,it is be setted `backbone_radio`.
 * **itemCount** ,define show item count in a row ,just used  when **itemType** is `backbone_check`.if it is `undefined` or `null`,backselect will compute to adaptable parent element's width.
 * **default** ,define which item will be selected when initializing.

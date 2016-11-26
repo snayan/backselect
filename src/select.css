@@ -1,5 +1,4 @@
 div.backbone_select {
-    height: 20px;
     border: 1px solid #ccc;
     margin: auto;
     padding: 6px 20px 6px 12px;
@@ -14,8 +13,22 @@ div.backbone_select {
     -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
 
+div.backbone_select.opened {
+    border: 1px solid #4cb549;
+}
+
+div.backbone_select:after {
+    content: url(ic_xiala.png);
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    transition: top 0.15s;
+}
+
 div.backbone_select p {
-    height: 100%;
+    height: 20px;
     margin: 0;
     padding: 0;
     font-size: 14px;
@@ -27,13 +40,6 @@ div.backbone_select p {
 
 div.backbone_select p > span.placeholder {
     color: #999999;
-}
-
-div.backbone_select img.xiala {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
 }
 
 div.backbone_select ul.select_list {
@@ -51,6 +57,7 @@ div.backbone_select ul.select_list {
     padding: 0;
     z-index: -1;
     border: none;
+    border-radius: 4px;
     transition: opacity ease-in-out .18s;
     -webkit-transition: opacity ease-in-out .18s;
 }
@@ -73,11 +80,11 @@ div.backbone_select li.select_item:hover {
 }
 
 div.backbone_select li.select_item label {
-    height: 16px;
-    width: 16px;
+    height: 14px;
+    width: 14px;
     display: block;
     border: 1px solid #ccc;
-    border-radius: 16px;
+    border-radius: 14px;
     cursor: pointer;
     float: left;
     margin: 0 6px 0 0;
@@ -86,17 +93,24 @@ div.backbone_select li.select_item label {
 }
 
 div.backbone_select li.selected.select_item label {
-    background: #4cb549;
+    background: url(ic_xuanze.png) #4cb549;
     color: #ffffff;
-    text-align: center;
+    border: none;
+    height: 16px;
+    width: 16px;
 }
 
 div.backbone_select li.select_item.backbone_radio {
     margin: 0;
     padding: 7px 14px;
     font-size: 12px;
-    line-height: 18px;
+    line-height: 16px;
     cursor: pointer;
+    white-space: nowrap;
+}
+
+div.backbone_select li.select_item.backbone_radio.select_item_empty {
+    height: 16px;
 }
 
 div.backbone_select li.select_item.backbone_radio:hover {
@@ -106,10 +120,10 @@ div.backbone_select li.select_item.backbone_radio:hover {
 }
 
 div.backbone_select li.select_item.backbone_check {
-    margin: 0 0 18px 0;
+    margin: 0 0 16px 0;
     padding: 0;
     font-size: 12px;
-    line-height: 18px;
+    line-height: 16px;
 }
 
 div.backbone_select li.select_item.backbone_check:hover {

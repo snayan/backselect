@@ -1,4 +1,3 @@
-
 ;(function (root, factory) {
     if (typeof define === "function" && define.amd) {
         // AMD (+ global for extensions)
@@ -18,8 +17,9 @@
         itemCount: null,//每行显示个数
         itemType: 'backbone_radio',//选择类型，backbone_radio:单选，backbone_check:多选,
         placeholder: '',//同input的placeholder功能
-        default: [],//默认值
-        silent: false//设置默认值时是否触发改变事件
+        default: null,//默认值
+        silent: false,//设置默认值时是否触发改变事件,
+        empty: false//单选时是否加空选择项，默认为false
     };
 
     var BackSelect = Backbone.View.extend({
@@ -41,11 +41,14 @@
 
         //初始化变量
         _initVariable: function (options) {
-            this.params = _.extend({}, defaults, _.pick(options, 'itemCount', 'itemType', 'placeholder', 'default', 'silent'));
-            this._itemtmp = _.template("<li class='select_item <%= className %> ' data-type='<%= itemType %>'  data-value='<%= value %>' data-name='<%= name %>' ><% if(itemType==='backbone_check') {%><label>&#10003</label><% } %><%= name %></li>");
+            this.params = _.extend({}, defaults, _.pick(options, 'itemCount', 'itemType', 'placeholder', 'default', 'silent', 'empty'));
+            this._itemtmp = _.template("<li class='select_item <%= className %> ' data-type='<%= itemType %>'  data-value='<%= value %>' data-name='<%= name %>' ><% if(itemType==='backbone_check') {%><label></label><% } %><%= name %></li>");
             this.collection = this.collection.map(function (model) {
                 return model.toJSON();
             });
+            this._timestamp = new Date().getTime();
+            this._uniqueID = this.cid + '_' + this._timestamp;
+            this._allValue = 'all_' + this._timestamp;
             this._names = [];
             this._values = [];
             this._class = {};
@@ -55,9 +58,11 @@
 
         //初始化元素
         _initInEl: function () {
-            this.$inel = $('<div class="backbone_select">');
+            var _isRadio = this.params.itemType === 'backbone_radio';
+            this.$inel = $('<div class="backbone_select" id="' + this._uniqueID + '">');
             this.$el.html(this.$inel);
-            this.$inel.append('<img class="xiala" src="src/ic_xiala.png">');
+            //bug:修复图标显示问题，改成$inel的after元素
+            // this.$inel.append('<img class="xiala" src="src/ic_xiala.png">');
             this.$p = $('<p>');
             this.$inel.append(this.$p);
             var collection = this.collection;
@@ -69,8 +74,7 @@
             if (!collection || !collection instanceof Backbone.Collection || !collection.length) {
                 return;
             }
-            var itemCount = this.params.itemCount,
-                total = collection.length,
+            var total = collection.length,
                 maxWidth = 0,
                 $item = null,
                 tmodel = null;
@@ -92,9 +96,38 @@
                 $list.append($item);
                 maxWidth = Math.max(maxWidth, $item.width());
             }
+            if (_isRadio && this.params.empty) {
+                this._maps[''] = '';
+                $list.prepend(this._itemtmp({
+                    value: null,
+                    name: '',
+                    itemType: 'backbone_radio',
+                    className: 'backbone_radio select_item_empty'
+                }))
+            }
+            if (!_isRadio) {
+                // this._maps['all'] = '全选';
+                $list.prepend(this._itemtmp({
+                    value: this._allValue,
+                    name: '全选',
+                    itemType: 'backbone_check',
+                    className: 'backbone_check select_item_all'
+                }))
+            }
+            if (this.params.default) {
+                this._setValue(this.params.default, this.params.silent, true, false);
+            }
+            this._autoWidth($list, maxWidth);
+
+        },
+
+        //自适应宽度
+        _autoWidth: function ($list, maxWidth) {
+            var itemCount = this.params.itemCount;
+            this.$inel.width(this.$el.width() - 34);
             if (this.params.itemType === 'backbone_radio') {
                 $list.css({padding: 0});
-                $list.find('li.select_item').width(this.$el.width() - 28);
+                $list.find('li.select_item').width(Math.max(maxWidth, this.$el.width() - 30));
             } else {
                 maxWidth = maxWidth + 10;
                 if (!itemCount) {
@@ -107,14 +140,20 @@
                 $list.find('li.select_item').width(maxWidth + '%');
             }
 
-            if (this.params.default) {
-                this._setValue(this.params.default, this.params.silent, true);
-            }
+        },
+
+        //自适应高度
+        _autoHeight: function () {
+            var $list = this.$inel.find('ul.select_list');
+            var uTop = $list.offset().top;
+            var uHeight = $list.height();
+            var tHeight = $('body').get(0).clientHeight;
+            $list.height(Math.min(uHeight, tHeight - uTop));
 
         },
 
         //设置值
-        _setValue: function (vals, silent, isDefault) {
+        _setValue: function (vals, silent, isDefault, isClickAll) {
             if (!$.isArray(vals)) {
                 vals = [vals];
             }
@@ -137,6 +176,9 @@
                 vals = vals.slice(0, 1);
                 _names.length = _values.length = 0;
             }
+            if (isClickAll && !this.$inel.find('li.select_item.select_item_all').hasClass('selected')) {
+                _names.length = _values.length = 0;
+            }
             for (i = 0, j = vals.length; i < j; i++) {
                 this._toggle(_values, vals[i] + '', !_isRadio);
                 this._toggle(_names, this._maps[vals[i] + ''], !_isRadio);
@@ -148,9 +190,17 @@
                     className: this.params.itemType + ' ' + (this._class[_values[i]] || '')
                 }));
             }
+            if (!_values.length && this.params.placeholder) {
+                this.$p.html('<span class="placeholder">' + this.params.placeholder + '</span>')
+            }
+            this.$inel.attr('title', _names.join(';'));
             this.$inel.find('li.select_item').removeClass('selected').filter(function () {
                 return ~$.inArray($(this).data('value') + '', _values);
             }).addClass('selected');
+
+            if (!_isRadio && _values.length && this.$inel.find('li.select_item.selected').length === Object.keys(this._maps).length) {
+                this.$inel.find('li.select_item.select_item_all').addClass('selected');
+            }
 
             if (!silent) {
                 this._triggerChange(old, isDefault);
@@ -188,6 +238,7 @@
             }
             $target.toggleClass('opened');
             this._listenToBody();
+            // this._autoHeight();
         },
 
         //内部选择事件
@@ -195,6 +246,7 @@
             e.preventDefault();
             var _isRadio = this.params.itemType === 'backbone_radio';
             var $target = $(e.target);
+            var val, isClickAll = false;
             if (!_isRadio && !$target.is('label')) {
                 return false;
             }
@@ -204,9 +256,15 @@
             if (!$target.is('li') || !$target.hasClass('select_item')) {
                 return false;
             }
-            this._setValue($target.data('value'), false, false);
+            val = $target.data('value');
+            isClickAll = val === this._allValue;
+            if (!_isRadio && isClickAll) {
+                val = Object.keys(this._maps);
+            }
+            this._setValue(val, false, false, isClickAll);
             if (_isRadio) {
                 this.$inel.removeClass('opened');
+                this._offToBody();
             }
             return false;
         },
@@ -215,22 +273,28 @@
         _listenToBody: function () {
             var hasDropDown = this.$inel.hasClass('opened');
             if (hasDropDown) {
-                $('body').on('click.backbone_select', function (e) {
+                $('body').on('click.' + this._uniqueID, {uniqueID: this._uniqueID}, function (e) {
+                    var uniqueID = e.data.uniqueID;
                     var $target = $(e.target);
                     var isInel = $target.hasClass('backbone_select');
                     while (!isInel && !$target.is('body')) {
                         $target = $target.parent();
                         isInel = $target.hasClass('backbone_select');
                     }
-                    if (!isInel) {
-                        $('div.backbone_select').removeClass('opened');
-                        $('body').off('click.backbone_select')
+                    if (!isInel || $target.attr('id') != uniqueID) {
+                        $('#' + uniqueID).removeClass('opened');
+                        $('body').off('click.' + uniqueID);
                     }
                     return false;
                 });
             } else {
-                $('body').off('click.backbone_select');
+                this._offToBody();
             }
+        },
+
+        //解除body点击事件监听
+        _offToBody: function () {
+            $('body').off('click.' + this._uniqueID)
         },
 
         //向数组里增加或减少值
@@ -262,6 +326,7 @@
 
         //移除
         remove: function () {
+            this._offToBody();
             this.undelegateEvents();
             Backbone.View.prototype.remove.call(this);
         }

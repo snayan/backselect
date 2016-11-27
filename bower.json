@@ -1,0 +1,21 @@
+{
+  "name": "backselect",
+  "description": "select component based on backbone",
+  "main": "select.js",
+  "authors": [
+    "snayan <snayan@sina.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "select",
+    "backbone"
+  ],
+  "homepage": "https://github.com/snayan/backselect",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

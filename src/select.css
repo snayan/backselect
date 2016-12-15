@@ -96,6 +96,7 @@ div.backbone_select li.select_item label {
     margin: 0 6px 0 0;
     color: #ffffff;
     text-align: center;
+    box-sizing: content-box;
 }
 
 div.backbone_select li.selected.select_item label {

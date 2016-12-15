@@ -13,6 +13,12 @@ div.backbone_select {
     -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
 }
 
+div.backbone_select.disabled{
+  background: #eeeeee !important;
+  opacity: 1 !important;
+  cursor: not-allowed !important;
+}
+
 div.backbone_select.opened {
     border: 1px solid #4cb549;
 }
@@ -144,4 +150,3 @@ div.backbone_select.opened ul.select_list {
     height: auto;
     z-index: 1000;
 }
-

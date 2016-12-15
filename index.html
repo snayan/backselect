@@ -21,7 +21,7 @@
     </style>
 </head>
 <body>
-<div id="example_01">
+<div id="example_01" >
 
 </div>
 <script>
@@ -63,7 +63,8 @@
             default: ['1', '2'],
             silent: true,
             itemCount: 1,
-//            itemType: 'backbone_check'
+            disabled:true,
+            itemType: 'backbone_check'
         };
         var roleSelect = new BackSelect(options);
         var otherView = new Backbone.View();

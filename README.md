@@ -17,19 +17,22 @@ if you have installed jquery,underscore,backbone,you can use it,like below
 * include `select.js` and `src/select.css` in your html.
 
 ## Example
-you can just given options just like `new BackSelect(options)`.
+you can give options just like `new BackSelect(options)`.
 
 options
+
 * **el** ,just like `Backbone.View` options el ,which define parent element,always be `div`
 * **collection** ,just like `Backbone.View` options collection,which must be a `Backbone.Collection` instance,and the model must include **name**,**value** attributes,also can include **className**.The **value** must be uniqued.The **className** will be added into the list item whether which is selected,which can define yourself stylesheet for list item. 
-* **itemType** , define select type,must be `backbone_radio` or `backbone_check`.if it is `undefined` or `null`,it is be setted `backbone_radio`.
-* **itemCount** ,define show item count in a row ,just used  when **itemType** is `backbone_check`.if it is `undefined` or `null`,backselect will compute to adaptable parent element's width.
-* **default** ,define which item will be selected when initializing.
+* **itemType** ,select type,must be `backbone_radio` or `backbone_check`.if it is `undefined` or `null`,it is be setted `backbone_radio`.
+* **itemCount** ,show item count in a row ,just used  when **itemType** is `backbone_check`.if it is `undefined` or `null`,backselect will compute to adaptable parent element's width.
+* **default** ,which item will be selected when initializing.
 * **silent** ,if it is true,backselect instance will trigger **changed** event after having gived **default**
-* **placeholder** ,just like input element's placeholder.
-* **empty**, define whether show an empty item ,just used when **itemType** is `backbone_radio`.
+* **placeholder** ,just like input element's placeholder,default value `''`
+* **empty**, whether show an empty item ,just used when **itemType** is `backbone_radio`,default value `false`
+*  **disabled**,whether make backselect disabled,default value `false`
 
 single select
+
 ```
 var options = {
             el: '#example_01',
@@ -44,6 +47,7 @@ var otherView = new Backbone.View();
 otherView.listenTo(roleSelect, 'changed', changed);
 ```
 multiple select
+
 ```
 var options = {
             el: '#example_01',
@@ -59,10 +63,42 @@ otherView.listenTo(roleSelect, 'changed', changed);
 ```
 
 ## Contributing
+
 I welcome contributions of all kinds from anyone.
+
 * [Bug reports](https://github.com/snayan/backselect/issues) 
 * [Feature requests](https://github.com/snayan/backselect/issues)
 * [Pull requests](https://github.com/snayan/backselect/pulls)
+
+##Changelog
+
+###v1.0.6
+
+add disabled status,then backselect can be disabled by adding `disabled:true` in options or add `disabled` class to its parent element
+
+###v.1.0.5
+
+add bower command,install it using `bower install backselect`.
+
+###v.1.0.4
+
+* fix icon show problem
+* fix placeholder problem
+* fix problem when mutiple backbone instance open or close at the same time 
+* add border color when opening 
+* add **all** item when itemType is `backbone_check`
+* add **empty** item when itemType is `backbone_radio`
+* fix item width problem 
+* add title attribute 
+
+###Older releases
+
+These releases were done before starting to maintain the above Changelog:
+
+* [v1.0.3](https://github.com/snayan/backselect/tree/v1.0.3)
+* [v1.0.2](https://github.com/snayan/backselect/tree/v1.0.2)
+* [v1.0.1](https://github.com/snayan/backselect/tree/v1.0.1)
+* [v1.0.0](https://github.com/snayan/backselect/tree/v1.0.0)
 
 ## License
 Licensed under the MIT License

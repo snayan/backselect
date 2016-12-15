@@ -72,6 +72,10 @@ I welcome contributions of all kinds from anyone.
 
 ##Changelog
 
+###v1.0.7
+
+add box-sizing attribute that is content-box
+
 ###v1.0.6
 
 add disabled status,then backselect can be disabled by adding `disabled:true` in options or add `disabled` class to its parent element

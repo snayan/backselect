@@ -33,30 +33,30 @@ options
 
 single select
 
-```
+```javascript
 var options = {
-            el: '#example_01',
-            collection: collection,
-            placeholder: '请选择级别',
-            default: ['1'],
-            silent: true,
-            empty:true
-        };
+        el: '#example_01',
+        collection: collection,
+        placeholder: '请选择级别',
+        default: ['1'],
+        silent: true,
+        empty:true
+    };
 var roleSelect = new BackSelect(options);
 var otherView = new Backbone.View();
 otherView.listenTo(roleSelect, 'changed', changed);
 ```
 multiple select
 
-```
+```javascript
 var options = {
-            el: '#example_01',
-            collection: collection,
-            placeholder: '请选择级别',
-            itemType:'backbone_check',
-            default: ['1'],
-            silent: true,
-        };
+        el: '#example_01',
+        collection: collection,
+        placeholder: '请选择级别',
+        itemType:'backbone_check',
+        default: ['1'],
+        silent: true,
+    };
 var roleSelect = new BackSelect(options);
 var otherView = new Backbone.View();
 otherView.listenTo(roleSelect, 'changed', changed);
@@ -71,6 +71,10 @@ I welcome contributions of all kinds from anyone.
 * [Pull requests](https://github.com/snayan/backselect/pulls)
 
 ##Changelog
+
+###v1.0.8
+
+use base64 to replace image request and remove image 
 
 ###v1.0.7
 

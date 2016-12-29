@@ -1,6 +1,6 @@
 {
   "name": "backselect",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "select component based on backbone",
   "main": "select.js",
   "scripts": {

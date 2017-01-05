@@ -1,8 +1,8 @@
 ;
-(function(root, factory) {
+(function (root, factory) {
     if (typeof define === "function" && define.amd) {
         // AMD (+ global for extensions)
-        define(["underscore", "jquery", "backbone"], function(_, $, Backbone) {
+        define(["underscore", "jquery", "backbone"], function (_, $, Backbone) {
             return (root.BackSelect = factory(_, $, Backbone));
         });
     } else if (typeof exports === "object") {
@@ -12,7 +12,7 @@
         // Browser
         root.BackSelect = factory(root._, root.$, root.Backbone);
     }
-})(this, function(_, $, Backbone) {
+})(this, function (_, $, Backbone) {
 
     var defaults = {
         itemCount: null, //每行显示个数
@@ -31,21 +31,21 @@
             'click li.select_item': '_select'
         },
 
-        initialize: function(options) {
+        initialize: function (options) {
             this.options = options;
             this._initVariable(options);
             this._initInEl();
         },
 
-        render: function() {
+        render: function () {
             return this;
         },
 
         //初始化变量
-        _initVariable: function(options) {
+        _initVariable: function (options) {
             this.params = _.extend({}, defaults, _.pick(options, 'itemCount', 'itemType', 'placeholder', 'default', 'silent', 'empty', 'disabled'));
             this._itemtmp = _.template("<li class='select_item <%= className %> ' data-type='<%= itemType %>'  data-value='<%= value %>' data-name='<%= name %>' ><% if(itemType==='backbone_check') {%><label></label><% } %><%= name %></li>");
-            this.collection = this.collection.map(function(model) {
+            this.collection = this.collection.map(function (model) {
                 return model.toJSON();
             });
             this._timestamp = new Date().getTime();
@@ -59,7 +59,7 @@
         },
 
         //初始化元素
-        _initInEl: function() {
+        _initInEl: function () {
             var _isRadio = this.params.itemType === 'backbone_radio';
             this.$inel = $('<div class="backbone_select" id="' + this._uniqueID + '">');
             this.$el.html(this.$inel);
@@ -128,7 +128,7 @@
         },
 
         //自适应宽度
-        _autoWidth: function($list, maxWidth) {
+        _autoWidth: function ($list, maxWidth) {
             var itemCount = this.params.itemCount;
             this.$inel.width(this.$el.width() - 34);
             if (this.params.itemType === 'backbone_radio') {
@@ -151,21 +151,28 @@
         },
 
         //自适应高度
-        _autoHeight: function() {
+        _autoHeight: function () {
+            var _isRadio = this.params.itemType === 'backbone_radio';
             var $list = this.$inel.find('ul.select_list');
             var uTop = $list.offset().top;
             var uHeight = $list.height();
             var tHeight = $('body').get(0).clientHeight;
-            $list.height(Math.min(uHeight, tHeight - uTop));
+            var remainHeight = tHeight - uTop - 10;
+            if (uHeight > remainHeight) {
+                if (!_isRadio) {
+                    remainHeight = remainHeight - 22;//减去paddding和border
+                }
+                $list.height(remainHeight);
+            }
 
         },
 
         //设置值
-        _setValue: function(vals, silent, isDefault, isClickAll) {
+        _setValue: function (vals, silent, isDefault, isClickAll) {
             if (!$.isArray(vals)) {
                 vals = [vals];
             }
-            vals = vals.filter(function(v) {
+            vals = vals.filter(function (v) {
                 return v !== null && v !== void 0 && this._maps.hasOwnProperty(v);
             }, this);
             if (!vals.length) {
@@ -202,7 +209,7 @@
                 this.$p.html('<span class="placeholder">' + this.params.placeholder + '</span>')
             }
             this.$inel.attr('title', _names.join(';'));
-            this.$inel.find('li.select_item').removeClass('selected').filter(function() {
+            this.$inel.find('li.select_item').removeClass('selected').filter(function () {
                 return ~$.inArray($(this).data('value') + '', _values);
             }).addClass('selected');
 
@@ -216,10 +223,10 @@
         },
 
         //触发改变事件
-        _triggerChange: function(old, isDefault) {
+        _triggerChange: function (old, isDefault) {
             if (old.values.join() !== this._values.join()) {
                 var _isRadio = this.params.itemType === 'backbone_radio';
-                setTimeout(function() {
+                setTimeout(function () {
                     this.trigger('changed', {
                         name: _isRadio ? old.names[0] : old.names,
                         value: _isRadio ? old.values[0] : old.values
@@ -232,9 +239,10 @@
         },
 
         //显示或隐藏
-        _dropdown: function(e) {
+        _dropdown: function (e) {
             e.preventDefault();
             var $target = $(e.target);
+            var _isRadio = this.params.itemType === 'backbone_radio';
             if (this.$inel.hasClass('disabled') || this.params.disabled) {
                 return false;
             }
@@ -247,13 +255,22 @@
             if (!$target.is('div') || !$target.hasClass('backbone_select')) {
                 return false;
             }
+            var style = this.$inel.find('ul.select_list').get(0).style;
+            if ($target.hasClass('opened')) {
+                style.height = '0';
+            } else {
+                style.height = 'auto';
+            }
+            if (_isRadio) {
+                style.padding = '0';
+            }
             $target.toggleClass('opened');
             this._listenToBody();
-            // this._autoHeight();
+            setTimeout(this._autoHeight.bind(this), 0);
         },
 
         //内部选择事件
-        _select: function(e) {
+        _select: function (e) {
             e.preventDefault();
             var _isRadio = this.params.itemType === 'backbone_radio';
             var $target = $(e.target);
@@ -277,19 +294,24 @@
             }
             this._setValue(val, false, false, isClickAll);
             if (_isRadio) {
+                if (this.$inel.hasClass('opened')) {
+                    this.$inel.find('ul.select_list').get(0).style.height = "0";
+                }
                 this.$inel.removeClass('opened');
                 this._offToBody();
+                setTimeout(this._autoHeight.bind(this), 0);
             }
             return false;
         },
 
         //body点击事件处理
-        _listenToBody: function() {
+        _listenToBody: function () {
             var hasDropDown = this.$inel.hasClass('opened');
+            var that = this;
             if (hasDropDown) {
                 $('body').on('click.' + this._uniqueID, {
                     uniqueID: this._uniqueID
-                }, function(e) {
+                }, function (e) {
                     var uniqueID = e.data.uniqueID;
                     var $target = $(e.target);
                     var isInel = $target.hasClass('backbone_select');
@@ -298,7 +320,10 @@
                         isInel = $target.hasClass('backbone_select');
                     }
                     if (!isInel || $target.attr('id') != uniqueID) {
-                        $('#' + uniqueID).removeClass('opened');
+                        var $uniqueID = $('#' + uniqueID);
+                        $uniqueID.find('ul.select_list').get(0).style = "0";
+                        $uniqueID.removeClass('opened');
+                        setTimeout(that._autoHeight.bind(that), 0);
                         $('body').off('click.' + uniqueID);
                     }
                     return false;
@@ -309,12 +334,12 @@
         },
 
         //解除body点击事件监听
-        _offToBody: function() {
+        _offToBody: function () {
             $('body').off('click.' + this._uniqueID)
         },
 
         //向数组里增加或减少值
-        _toggle: function(list, value, isRemove) {
+        _toggle: function (list, value, isRemove) {
             var _index = list.indexOf(value);
             if (!~_index) {
                 return list.push(value);
@@ -326,7 +351,7 @@
         },
 
         //清空
-        clean: function() {
+        clean: function () {
             this.undelegateEvents();
             this.$inel.find('ul.select_list').empty();
 
@@ -341,7 +366,7 @@
         },
 
         //移除
-        remove: function() {
+        remove: function () {
             this._offToBody();
             this.undelegateEvents();
             Backbone.View.prototype.remove.call(this);

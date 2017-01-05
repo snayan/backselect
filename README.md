@@ -14,7 +14,7 @@ It is a lightweight, small size and  powerful select component,which is more bea
 It is based on backbone. So ,it is depend on [jquery](https://github.com/jquery/jquery),[underscore](https://github.com/jashkenas/underscore),[backbone](https://github.com/jashkenas/backbone).you must install those before using backselect.
 if you have installed jquery,underscore,backbone,you can use it,like below
 * install it  `npm install backselect`
-* include `select.js` and `src/select.css` in your html.
+* include `select.js` and `select.css` in your html.
 
 ## Example
 you can give options just like `new BackSelect(options)`.
@@ -71,6 +71,10 @@ I welcome contributions of all kinds from anyone.
 * [Pull requests](https://github.com/snayan/backselect/pulls)
 
 ##Changelog
+
+###v1.0.9
+
+add auto height 
 
 ###v1.0.8
 

@@ -72,6 +72,10 @@ I welcome contributions of all kinds from anyone.
 
 ##Changelog
 
+###v1.0.10
+
+optimize css 
+
 ###v1.0.9
 
 add auto height 

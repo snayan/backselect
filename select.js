@@ -278,9 +278,9 @@
             if (this.$inel.hasClass('disabled') || this.params.disabled) {
                 return false;
             }
-            if (!_isRadio && !$target.is('label')) {
-                return false;
-            }
+            // if (!_isRadio && !$target.is('label')) {
+            //     return false;
+            // }
             if (!$target.is('li') || !$target.hasClass('select_item')) {
                 $target = $target.parent();
             }
